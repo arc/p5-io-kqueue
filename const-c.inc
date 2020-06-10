@@ -342,11 +342,11 @@ my @names = (qw(EVFILT_FS EVFILT_PROC EVFILT_READ EVFILT_SIGNAL EVFILT_TIMER
 	       NOTE_LOWAT NOTE_PCTRLMASK NOTE_PDATAMASK NOTE_RENAME NOTE_REVOKE
 	       NOTE_TRACK NOTE_TRACKERR NOTE_WRITE));
 
-print constant_types(); # macro defs
+print constant_types(), "\n"; # macro defs
 foreach (C_constant ("IO::KQueue", 'constant', 'IV', $types, undef, 3, @names) ) {
     print $_, "\n"; # C constant subs
 }
-print "#### XS Section:\n";
+print "\n#### XS Section:\n";
 print XS_constant ("IO::KQueue", $types);
 __END__
    */

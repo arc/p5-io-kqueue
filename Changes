@@ -1,6 +1,10 @@
 IO::KQueue Changes
 ==================
     
+0.33
+    - Fix for assertion failures on newer perls when no udata is passed
+    - Various compiler cleanups
+
 0.32
     - Previous stack fix was buggy. Really fixed.
 

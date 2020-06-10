@@ -1,5 +1,3 @@
-/* $Id: KQueue.xs,v 1.6 2006/07/24 21:21:31 matt Exp $ */
-
 #include "EXTERN.h"
 #include "perl.h"
 #include "XSUB.h"
@@ -60,6 +58,8 @@ EV_SET(kq, ident, filter, flags, fflags = 0, data = 0, udata = NULL)
     memset(&ke, 0, sizeof(struct kevent));
     if (udata)
         SvREFCNT_inc(udata);
+    else
+        udata = &PL_sv_undef;
     EV_SET(&ke, ident, filter, flags, fflags, data, udata);
     i = kevent(kq, &ke, 1, NULL, 0, NULL);
     if (i == -1) {
@@ -77,7 +77,7 @@ kevent(kq, timeout=&PL_sv_undef)
     struct timespec *tbuf = (struct timespec *)0;
     I32 max_events = SvIV(get_sv("IO::KQueue::MAX_EVENTS", FALSE));
   PPCODE:
-    Newz(0, ke, max_events, struct kevent);
+    Newxz(ke, max_events, struct kevent);
     if (ke == NULL) {
         croak("malloc failed");
     }

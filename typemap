@@ -1,11 +1,11 @@
 TYPEMAP
-kqueue_t       O_OBJECT
+kqueue_t       KQUEUE_OBJECT
 uintptr_t      T_U_INT
 u_short        T_U_SHORT
 intptr_t       T_INT
 
 INPUT
-O_OBJECT
+KQUEUE_OBJECT
     if( sv_isobject($arg) && (SvTYPE(SvRV($arg)) == SVt_PVMG) )
             $var = ($type)SvIV((SV*)SvRV( $arg ));
     else{
@@ -17,5 +17,5 @@ OUTPUT
 
 # The Perl object is blessed into 'CLASS', which should be a
 # char* having the name of the package for the blessing.
-O_OBJECT
-        sv_setref_pv( $arg, (char *)CLASS, (void*)$var );
+KQUEUE_OBJECT
+        sv_setref_iv( $arg, (const char *)CLASS, (IV)$var );
