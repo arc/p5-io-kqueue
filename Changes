@@ -1,6 +1,9 @@
 IO::KQueue Changes
 ==================
     
+0.34
+    - Rebuilt tarball without the stupid OSX resource fork files.
+
 0.33
     - Fix for assertion failures on newer perls when no udata is passed
     - Various compiler cleanups

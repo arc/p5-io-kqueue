@@ -1,6 +1,6 @@
 --- #YAML:1.0
 name:                IO-KQueue
-version:             0.33
+version:             0.34
 abstract:            perl interface to the BSD kqueue system call
 license:             ~
 author:              

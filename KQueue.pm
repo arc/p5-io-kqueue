@@ -9,7 +9,7 @@ use Exporter ();
 use Errno;
 
 BEGIN {
-$VERSION = '0.33';
+$VERSION = '0.34';
 
 $MAX_EVENTS = 1000;
 
