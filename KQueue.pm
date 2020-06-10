@@ -1,4 +1,4 @@
-# $Id: KQueue.pm,v 1.4 2005/03/02 19:28:30 matt Exp $
+# $Id: KQueue.pm,v 1.5 2006/05/23 14:22:28 matt Exp $
 
 package IO::KQueue;
 
@@ -11,7 +11,7 @@ use Exporter ();
 use Errno;
 
 BEGIN {
-$VERSION = '0.29';
+$VERSION = '0.30';
 
 $MAX_EVENTS = 1000;
 

@@ -8,11 +8,9 @@ my $START = 10;
 my %opts;
 
 getopts('h', \%opts);
-
 help() if $opts{h};
 
 my $file = shift(@ARGV) || "-";
-
 open(my $fh, $file) || die "$0: open($file): $!";
 
 my @buf;

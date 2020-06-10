@@ -1,6 +1,9 @@
 IO::KQueue Changes
 ==================
 
+0.30
+    - Compilation fix
+
 0.29
     - Fix typo in EV_ONESHOT
     - Another memory leak fix
