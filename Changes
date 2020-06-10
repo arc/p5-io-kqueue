@@ -1,5 +1,8 @@
 IO::KQueue Changes
 ==================
+    
+0.32
+    - Previous stack fix was buggy. Really fixed.
 
 0.31
     - Make sure stack is empty before extending/pushing

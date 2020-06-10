@@ -15,11 +15,23 @@
 
 typedef int kqueue_t;
 
+struct kevent *ke2 = NULL;
+AV * ke2av = NULL;
+
 MODULE = IO::KQueue  PACKAGE = IO::KQueue
 
 PROTOTYPES: DISABLE
 
 INCLUDE: const-xs.inc
+
+BOOT:
+    Newz(0, ke2, 1000, struct kevent);
+    ke2av = newAV();
+    av_store(ke2av, 0, (newSViv(0)));
+    av_store(ke2av, 1, (newSViv(0)));
+    av_store(ke2av, 2, (newSViv(0)));
+    av_store(ke2av, 3, (newSViv(0)));
+    av_store(ke2av, 4, (newSViv(0)));
 
 kqueue_t
 new(CLASS)
@@ -59,7 +71,6 @@ kevent(kq, timeout=&PL_sv_undef)
     kqueue_t    kq
     SV *        timeout
   PREINIT:
-    dSP;
     int num_events, i;
     struct timespec t;
     struct kevent *ke = NULL;
@@ -87,10 +98,6 @@ kevent(kq, timeout=&PL_sv_undef)
         croak("kevent error: %s", strerror(errno));
     }
     
-    /* make sure nothing is on the stack */
-    POPs;
-    POPs;
-    
     /* extend it for the number of events we have */
     EXTEND(SP, num_events);
     for (i = 0; i < num_events; i++) {
@@ -105,3 +112,50 @@ kevent(kq, timeout=&PL_sv_undef)
     }
     
     Safefree(ke);
+
+int
+kevent2(kq, timeout=&PL_sv_undef)
+    kqueue_t    kq
+    SV *        timeout
+  PREINIT:
+    int num_events, i;
+    struct timespec t;
+    struct timespec *tbuf = (struct timespec *)0;
+  CODE:
+    if (timeout != &PL_sv_undef) {
+        I32 time = SvIV(timeout);
+        if (time >= 0) {
+            t.tv_sec = time / 1000;
+            t.tv_nsec = (time % 1000) * 1000000;
+            tbuf = &t;
+        }
+    }
+    
+    RETVAL = kevent(kq, NULL, 0, ke2, 1000, tbuf);
+    
+  OUTPUT:
+    RETVAL
+
+SV*
+get_kev(kq, i)
+    kqueue_t    kq
+    int  i
+  PREINIT:
+    dXSTARG;
+  CODE:
+    if (i < 0 || i >= 1000) {
+        croak("Invalid kevent id: %d", i);
+    }
+    
+    sv_setiv(AvARRAY(ke2av)[0], ke2[i-1].ident);
+    sv_setiv(AvARRAY(ke2av)[1], ke2[i-1].filter);
+    sv_setiv(AvARRAY(ke2av)[2], ke2[i-1].flags);
+    sv_setiv(AvARRAY(ke2av)[3], ke2[i-1].fflags);
+    sv_setiv(AvARRAY(ke2av)[4], ke2[i-1].data);
+    av_store(ke2av, 5, SvREFCNT_inc(ke2[i-1].udata));
+    
+    RETVAL = newRV_inc((SV*) ke2av);
+    
+  OUTPUT:
+    RETVAL
+    
