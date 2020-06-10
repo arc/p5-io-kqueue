@@ -1,4 +1,4 @@
-/* $Id: KQueue.xs,v 1.2 2005/03/02 14:59:12 matt Exp $ */
+/* $Id: KQueue.xs,v 1.3 2005/03/02 15:21:07 matt Exp $ */
 
 #include "EXTERN.h"
 #include "perl.h"
@@ -60,13 +60,13 @@ kevent(kq, timeout=&PL_sv_undef)
     SV *        timeout
   PREINIT:
     int num_events, i;
-    struct kevent *ke;
     struct timespec t;
+    struct kevent *ke = NULL;
     struct timespec *tbuf = (struct timespec *)0;
     I32 max_events = SvIV(get_sv("IO::KQueue::MAX_EVENTS", FALSE));
   PPCODE:
     dXSTARG;
-    ke = calloc(max_events, sizeof(struct kevent));
+    Newz(0, ke, max_events, struct kevent);
     if (ke == NULL) {
         croak("malloc failed");
     }
@@ -95,3 +95,5 @@ kevent(kq, timeout=&PL_sv_undef)
         av_push(array, SvREFCNT_inc(ke[i].udata));
         PUSHs(sv_2mortal(newRV_noinc((SV*)array)));
     }
+    
+    Safefree(ke);

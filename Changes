@@ -1,6 +1,9 @@
 IO::KQueue Changes
 ==================
 
+0.28
+    - Forgot to free the kevent leading to massive memory leak
+
 0.27
     - More constants added.
     - Move variable declarations into PREINIT so they compile with a
