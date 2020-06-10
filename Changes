@@ -1,6 +1,10 @@
 IO::KQueue Changes
 ==================
 
+0.31
+    - Make sure stack is empty before extending/pushing
+    - Support timeout = -1 means poll forever
+
 0.30
     - Compilation fix
 

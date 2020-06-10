@@ -1,4 +1,4 @@
-/* $Id: KQueue.xs,v 1.5 2006/05/23 14:19:24 matt Exp $ */
+/* $Id: KQueue.xs,v 1.6 2006/07/24 21:21:31 matt Exp $ */
 
 #include "EXTERN.h"
 #include "perl.h"
@@ -73,9 +73,11 @@ kevent(kq, timeout=&PL_sv_undef)
     
     if (timeout != &PL_sv_undef) {
         I32 time = SvIV(timeout);
-        t.tv_sec = time / 1000;
-        t.tv_nsec = (time % 1000) * 1000000;
-        tbuf = &t;
+        if (time >= 0) {
+            t.tv_sec = time / 1000;
+            t.tv_nsec = (time % 1000) * 1000000;
+            tbuf = &t;
+        }
     }
     
     num_events = kevent(kq, NULL, 0, ke, max_events, tbuf);
@@ -85,6 +87,11 @@ kevent(kq, timeout=&PL_sv_undef)
         croak("kevent error: %s", strerror(errno));
     }
     
+    /* make sure nothing is on the stack */
+    POPs;
+    POPs;
+    
+    /* extend it for the number of events we have */
     EXTEND(SP, num_events);
     for (i = 0; i < num_events; i++) {
         AV * array = newAV();
