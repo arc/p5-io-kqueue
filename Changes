@@ -1,6 +1,10 @@
 IO::KQueue Changes
 ==================
 
+0.29
+    - Fix typo in EV_ONESHOT
+    - Another memory leak fix
+    
 0.28
     - Forgot to free the kevent leading to massive memory leak
 

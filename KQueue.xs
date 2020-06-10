@@ -1,4 +1,4 @@
-/* $Id: KQueue.xs,v 1.3 2005/03/02 15:21:07 matt Exp $ */
+/* $Id: KQueue.xs,v 1.4 2005/03/02 19:28:30 matt Exp $ */
 
 #include "EXTERN.h"
 #include "perl.h"
@@ -81,6 +81,7 @@ kevent(kq, timeout=&PL_sv_undef)
     num_events = kevent(kq, NULL, 0, ke, max_events, tbuf);
     
     if (num_events == -1) {
+        Safefree(ke);
         croak("kevent error: %s", strerror(errno));
     }
     

@@ -1,4 +1,4 @@
-# $Id: KQueue.pm,v 1.3 2005/03/02 15:21:07 matt Exp $
+# $Id: KQueue.pm,v 1.4 2005/03/02 19:28:30 matt Exp $
 
 package IO::KQueue;
 
@@ -11,7 +11,7 @@ use Exporter ();
 use Errno;
 
 BEGIN {
-$VERSION = '0.28';
+$VERSION = '0.29';
 
 $MAX_EVENTS = 1000;
 
@@ -63,7 +63,7 @@ use constant EV_ADD => (constant('EV_ADD'))[1];
 use constant EV_DELETE => (constant('EV_DELETE'))[1];
 use constant EV_ENABLE => (constant('EV_ENABLE'))[1];
 use constant EV_DISABLE => (constant('EV_DISABLE'))[1];
-use constant EV_ONESHOT => (constant(' EV_ONESHOT'))[1];
+use constant EV_ONESHOT => (constant('EV_ONESHOT'))[1];
 use constant EV_CLEAR => (constant('EV_CLEAR'))[1];
 use constant EV_EOF => (constant('EV_EOF'))[1];
 use constant EV_ERROR => (constant('EV_ERROR'))[1];
