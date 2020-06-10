@@ -1,4 +1,4 @@
-# $Id: KQueue.pm,v 1.1.1.1 2005/02/17 16:49:08 matt Exp $
+# $Id: KQueue.pm,v 1.2 2005/03/02 14:59:12 matt Exp $
 
 package IO::KQueue;
 
@@ -11,7 +11,7 @@ use Exporter ();
 use Errno;
 
 BEGIN {
-$VERSION = '0.26';
+$VERSION = '0.27';
 
 $MAX_EVENTS = 1000;
 
@@ -163,8 +163,9 @@ The C<$fflags>, C<$data> and C<$udata> params are optional.
 
 =head2 C<< $kq->kevent($timeout) >>
 
-Poll for events on the kqueue. Timeout is in milliseconds. If timeout is zero
-or ommitted then we poll forever until there are events to read.
+Poll for events on the kqueue. Timeout is in milliseconds. If timeout is
+ommitted then we wait forever until there are events to read. If timeout is
+zero then we return immediately.
 
 Returns a list of arrayrefs which contain the kevent. The contents of the kevent
 are:

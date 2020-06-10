@@ -1,5 +1,15 @@
 IO::KQueue Changes
 ==================
 
+0.27
+    - More constants added.
+    - Move variable declarations into PREINIT so they compile with a
+      C compiler.
+    - Allow zero valued timeout for an immediate poll.
+
+0.26
+    - More constants added
+    - tail.pl example added
+
 0.25
     - Initial Release

@@ -1,4 +1,4 @@
-/* $Id: KQueue.xs,v 1.1.1.1 2005/02/17 16:49:08 matt Exp $ */
+/* $Id: KQueue.xs,v 1.2 2005/03/02 14:59:12 matt Exp $ */
 
 #include "EXTERN.h"
 #include "perl.h"
@@ -41,7 +41,7 @@ EV_SET(kq, ident, filter, flags, fflags = 0, data = 0, udata = NULL)
     u_short     fflags
     intptr_t    data
     SV        * udata
-  INIT:
+  PREINIT:
     struct kevent ke;
     int i;
   PPCODE:
@@ -55,10 +55,10 @@ EV_SET(kq, ident, filter, flags, fflags = 0, data = 0, udata = NULL)
     }
 
 void
-kevent(kq, timeout=0)
+kevent(kq, timeout=&PL_sv_undef)
     kqueue_t    kq
-    I32         timeout
-  INIT:
+    SV *        timeout
+  PREINIT:
     int num_events, i;
     struct kevent *ke;
     struct timespec t;
@@ -71,9 +71,10 @@ kevent(kq, timeout=0)
         croak("malloc failed");
     }
     
-    if (timeout > 0) {
-        t.tv_sec = timeout / 1000;
-        t.tv_nsec = (timeout % 1000) * 1000000;
+    if (timeout != &PL_sv_undef) {
+        I32 time = SvIV(timeout);
+        t.tv_sec = time / 1000;
+        t.tv_nsec = (time % 1000) * 1000000;
         tbuf = &t;
     }
     
