@@ -40,12 +40,14 @@ EV_SET(kq, ident, filter, flags, fflags = 0, data = 0, udata = NULL)
     u_short     flags
     u_short     fflags
     intptr_t    data
-    void      * udata
+    SV        * udata
   INIT:
     struct kevent ke;
     int i;
   PPCODE:
     memset(&ke, 0, sizeof(struct kevent));
+    if (udata)
+        SvREFCNT_inc(udata);
     EV_SET(&ke, ident, filter, flags, fflags, data, udata);
     i = kevent(kq, &ke, 1, NULL, 0, NULL);
     if (i == -1) {
@@ -81,7 +83,14 @@ kevent(kq, timeout=0)
         croak("kevent error: %s", strerror(errno));
     }
     
+    EXTEND(SP, num_events);
     for (i = 0; i < num_events; i++) {
-        XPUSHs(sv_2mortal(newSViv(ke[i].ident)));
-        XPUSHs(sv_2mortal(newSViv(ke[i].filter)));
+        AV * array = newAV();
+        av_push(array, newSViv(ke[i].ident));
+        av_push(array, newSViv(ke[i].filter));
+        av_push(array, newSViv(ke[i].flags));
+        av_push(array, newSViv(ke[i].fflags));
+        av_push(array, newSViv(ke[i].data));
+        av_push(array, SvREFCNT_inc(ke[i].udata));
+        PUSHs(sv_2mortal(newRV_noinc((SV*)array)));
     }

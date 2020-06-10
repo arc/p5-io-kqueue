@@ -1,7 +1,8 @@
 Changes
-chat.pl
 const-c.inc
 const-xs.inc
+examples/chat.pl
+examples/tail.pl
 KQueue.pm
 KQueue.xs
 Makefile.PL

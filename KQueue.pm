@@ -10,7 +10,8 @@ use Exporter ();
 
 use Errno;
 
-$VERSION = '0.25';
+BEGIN {
+$VERSION = '0.26';
 
 $MAX_EVENTS = 1000;
 
@@ -31,9 +32,71 @@ $MAX_EVENTS = 1000;
     EVFILT_SIGNAL
     EVFILT_TIMER
     EVFILT_FS
+    NOTE_LOWAT
+    NOTE_DELETE
+    NOTE_WRITE
+    NOTE_EXTEND
+    NOTE_ATTRIB
+    NOTE_LINK
+    NOTE_RENAME
+    NOTE_REVOKE
+    NOTE_EXIT
+    NOTE_FORK
+    NOTE_EXEC
+    NOTE_PCTRLMASK
+    NOTE_PDATAMASK
+    NOTE_TRACK
+    NOTE_TRACKERR
+    NOTE_CHILD
+    KQ_IDENT
+    KQ_FILTER
+    KQ_FLAGS
+    KQ_FFLAGS
+    KQ_DATA
+    KQ_UDATA
 );
 
 bootstrap IO::KQueue $VERSION;
+}
+
+use constant EV_ADD => (constant('EV_ADD'))[1];
+use constant EV_DELETE => (constant('EV_DELETE'))[1];
+use constant EV_ENABLE => (constant('EV_ENABLE'))[1];
+use constant EV_DISABLE => (constant('EV_DISABLE'))[1];
+use constant EV_ONESHOT => (constant(' EV_ONESHOT'))[1];
+use constant EV_CLEAR => (constant('EV_CLEAR'))[1];
+use constant EV_EOF => (constant('EV_EOF'))[1];
+use constant EV_ERROR => (constant('EV_ERROR'))[1];
+use constant EVFILT_READ => (constant('EVFILT_READ'))[1];
+use constant EVFILT_WRITE => (constant('EVFILT_WRITE'))[1];
+use constant EVFILT_VNODE => (constant('EVFILT_VNODE'))[1];
+use constant EVFILT_PROC => (constant('EVFILT_PROC'))[1];
+use constant EVFILT_SIGNAL => (constant('EVFILT_SIGNAL'))[1];
+use constant EVFILT_TIMER => (constant('EVFILT_TIMER'))[1];
+use constant EVFILT_FS => (constant('EVFILT_FS'))[1];
+use constant NOTE_LOWAT => (constant('NOTE_LOWAT'))[1];
+use constant NOTE_DELETE => (constant('NOTE_DELETE'))[1];
+use constant NOTE_WRITE => (constant('NOTE_WRITE'))[1];
+use constant NOTE_EXTEND => (constant('NOTE_EXTEND'))[1];
+use constant NOTE_ATTRIB => (constant('NOTE_ATTRIB'))[1];
+use constant NOTE_LINK => (constant('NOTE_LINK'))[1];
+use constant NOTE_RENAME => (constant('NOTE_RENAME'))[1];
+use constant NOTE_REVOKE => (constant('NOTE_REVOKE'))[1];
+use constant NOTE_EXIT => (constant('NOTE_EXIT'))[1];
+use constant NOTE_FORK => (constant('NOTE_FORK'))[1];
+use constant NOTE_EXEC => (constant('NOTE_EXEC'))[1];
+use constant NOTE_PCTRLMASK => (constant('NOTE_PCTRLMASK'))[1];
+use constant NOTE_PDATAMASK => (constant('NOTE_PDATAMASK'))[1];
+use constant NOTE_TRACK => (constant('NOTE_TRACK'))[1];
+use constant NOTE_TRACKERR => (constant('NOTE_TRACKERR'))[1];
+use constant NOTE_CHILD => (constant('NOTE_CHILD'))[1];
+
+use constant KQ_IDENT => 0;
+use constant KQ_FILTER => 1;
+use constant KQ_FLAGS => 2;
+use constant KQ_FFLAGS => 3;
+use constant KQ_DATA => 4;
+use constant KQ_UDATA => 5;
 
 sub DESTROY {
 }
@@ -103,17 +166,31 @@ The C<$fflags>, C<$data> and C<$udata> params are optional.
 Poll for events on the kqueue. Timeout is in milliseconds. If timeout is zero
 or ommitted then we poll forever until there are events to read.
 
-Returns a list of C<< (ident, filt) >> pairs which you can either assign
-directly to a hash, or iterate through. See the included F<chat.pl> program
-for an example usage.
+Returns a list of arrayrefs which contain the kevent. The contents of the kevent
+are:
 
-NOTE: The API here may be extended to return additional flags. Email the author
-for ideas about this.
+=over 4
+
+=item * C<< $kevent->[KQ_IDENT] >>
+
+=item * C<< $kevent->[KQ_FILTER] >>
+
+=item * C<< $kevent->[KQ_FLAGS] >>
+
+=item * C<< $kevent->[KQ_FFLAGS] >>
+
+=item * C<< $kevent->[KQ_DATA] >>
+
+=item * C<< $kevent->[KQ_UDATA] >>
+
+See the included F<tail.pl> and F<chat.pl> scripts for example usage, and see
+the kqueue man pages for full details.
 
 =head1 CONSTANTS
 
 For a list of exported constants see the source of F<Makefile.PL>, or the
-kqueue man page.
+kqueue man page. In addition the C<KQ_*> entries of the kevent are also
+exported - see the list above.
 
 =head1 LICENSE
 

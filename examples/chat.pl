@@ -24,8 +24,8 @@ while (1) {
         die "No kevents: $!";
     }
     
-    while (@ret) {
-        my ($fd, $flags) = splice(@ret, 0, 2);
+    foreach my $kevent (@ret) {
+        my $fd = $kevent->[KQ_IDENT];
         
         if ($fd == fileno($server)) {
             my $client = $server->accept();

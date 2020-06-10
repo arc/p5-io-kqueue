@@ -46,6 +46,22 @@ if (!$@) {
                                 EVFILT_SIGNAL
                                 EVFILT_TIMER
                                 EVFILT_FS
+                                NOTE_LOWAT
+                                NOTE_DELETE
+                                NOTE_WRITE
+                                NOTE_EXTEND
+                                NOTE_ATTRIB
+                                NOTE_LINK
+                                NOTE_RENAME
+                                NOTE_REVOKE
+                                NOTE_EXIT
+                                NOTE_FORK
+                                NOTE_EXEC
+                                NOTE_PCTRLMASK
+                                NOTE_PDATAMASK
+                                NOTE_TRACK
+                                NOTE_TRACKERR
+                                NOTE_CHILD
                              )],
     );
 }
