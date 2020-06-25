@@ -1,7 +1,7 @@
 package IO::KQueue;
 
 use strict;
-use vars qw($VERSION @ISA @EXPORT $AUTOLOAD $MAX_EVENTS);
+use warnings;
 
 use DynaLoader ();
 use Exporter ();
@@ -9,12 +9,12 @@ use Exporter ();
 use Errno;
 
 BEGIN {
-$VERSION = '0.34';
+our $VERSION = '0.34';
 
-$MAX_EVENTS = 1000;
+our $MAX_EVENTS = 1000;
 
-@ISA = qw(Exporter DynaLoader);
-@EXPORT = qw(
+our @ISA = qw(Exporter DynaLoader);
+our @EXPORT = qw(
     EV_ADD
     EV_DELETE
     EV_ENABLE
@@ -100,7 +100,7 @@ sub DESTROY {
 }
 
 sub AUTOLOAD {
-    my $sub = $AUTOLOAD;
+    my $sub = our $AUTOLOAD;
     (my $constname = $sub) =~ s/.*:://;
     my ($err, $val) = constant($constname);
     if (defined($err)) {
