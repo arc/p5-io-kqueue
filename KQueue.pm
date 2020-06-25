@@ -4,7 +4,7 @@ use strict;
 use warnings;
 
 use DynaLoader ();
-use Exporter ();
+use Exporter qw(import);
 
 use Errno;
 
@@ -13,7 +13,7 @@ our $VERSION = '0.34';
 
 our $MAX_EVENTS = 1000;
 
-our @ISA = qw(Exporter DynaLoader);
+our @ISA = qw(DynaLoader);
 our @EXPORT = qw(
     EV_ADD
     EV_DELETE
