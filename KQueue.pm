@@ -3,8 +3,8 @@ package IO::KQueue;
 use strict;
 use warnings;
 
-use DynaLoader ();
 use Exporter qw(import);
+use XSLoader;
 
 use Errno;
 
@@ -13,7 +13,6 @@ our $VERSION = '0.34';
 
 our $MAX_EVENTS = 1000;
 
-our @ISA = qw(DynaLoader);
 our @EXPORT = qw(
     EV_ADD
     EV_DELETE
@@ -54,7 +53,7 @@ our @EXPORT = qw(
     KQ_UDATA
 );
 
-bootstrap IO::KQueue $VERSION;
+XSLoader::load(__PACKAGE__, $VERSION);
 }
 
 use constant EV_ADD => (constant('EV_ADD'))[1];

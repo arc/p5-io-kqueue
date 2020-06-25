@@ -17,7 +17,7 @@ WriteMakefile(
     AUTHOR => 'Matt Sergeant <matt@sergeant.org>',
     CONFIGURE_REQUIRES => { 'Devel::CheckLib' => 0 },
     NAME => 'IO::KQueue',
-    PREREQ_PM => {},
+    PREREQ_PM => { 'XSLoader' => 0 },
     VERSION_FROM => 'KQueue.pm',
 );
 
