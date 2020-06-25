@@ -1,26 +1,22 @@
 #!/usr/bin/perl -w
 
+use 5.010001;
 use strict;
+use warnings;
+
 use ExtUtils::MakeMaker;
+use Devel::CheckLib;
 
-eval { require 'syscall.ph'; 1 } || eval { require 'sys/syscall.ph'; 1 };
-
-my $SYS_kqueue = eval { &::SYS_kqueue } || 362;
-
-my $kq = eval { syscall($SYS_kqueue) };
-
-if ($@) {
-    print <<EOT;
-No kqueue() available on this platform.
-
-EOT
-    exit;
-}
+check_lib_or_exit(
+    header => 'sys/event.h',
+    function => 'return kqueue() == -1 ? 0 : 1;',
+);
 
 WriteMakefile(
     VERSION_FROM   => 'KQueue.pm',
     NAME           => 'IO::KQueue',
     PREREQ_PM      => {  },
+    CONFIGURE_REQUIRES => { 'Devel::CheckLib' => 0 },
     ABSTRACT_FROM  => 'KQueue.pm',
     AUTHOR         => 'Matt Sergeant <matt@sergeant.org>',
     clean          => {FILES => "tv.log"}
