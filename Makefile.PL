@@ -20,6 +20,7 @@ my %make = (
     PREREQ_PM => { 'XSLoader' => 0 },
     VERSION_FROM => 'KQueue.pm',
     META_MERGE => {
+        release_status => 'testing',
         "meta-spec" => { version => 2 },
         resources => {
             license  => [ 'perl_5' ],
