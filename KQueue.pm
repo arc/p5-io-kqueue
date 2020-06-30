@@ -6,8 +6,6 @@ use warnings;
 use Exporter qw(import);
 use XSLoader;
 
-use Errno;
-
 BEGIN {
 our $VERSION = '0.34';
 
