@@ -12,14 +12,36 @@ check_lib_or_exit(
     function => 'return kqueue() == -1 ? 0 : 1;',
 );
 
-WriteMakefile(
+my %make = (
     ABSTRACT_FROM => 'KQueue.pm',
     AUTHOR => 'Matt Sergeant <matt@sergeant.org>',
     CONFIGURE_REQUIRES => { 'Devel::CheckLib' => 0 },
     NAME => 'IO::KQueue',
     PREREQ_PM => { 'XSLoader' => 0 },
     VERSION_FROM => 'KQueue.pm',
+    META_MERGE => {
+        "meta-spec" => { version => 2 },
+        resources => {
+            license  => [ 'perl_5' ],
+            repository => {
+                url => 'git://github.com/arc/p5-io-kqueue.git',
+                web => 'https://github.com/arc/p5-io-kqueue',
+                type => 'git',
+            },
+            bugtracker => {
+                web => 'https://github.com/arc/p5-io-kqueue/issues',
+            },
+        },
+    },
 );
+
+my $eumm_version = eval $ExtUtils::MakeMaker::VERSION;
+if ($eumm_version < 6.64) {
+    my ($prereq, $test_req) = ($make{PREREQ_PM}, delete $make{TEST_REQUIRES});
+    %$prereq = (%$prereq, %$test_req);
+}
+
+WriteMakefile(%make);
 
 eval { require ExtUtils::Constant; 1 };
 if (!$@) {
