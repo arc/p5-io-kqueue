@@ -1,6 +1,9 @@
 IO::KQueue Changes
 ==================
 
+0.36
+    - Release trial version with no other changes
+
 0.35-TRIAL
     - New maintainer ARC (Aaron Crane)
     - Fixes to build on recent MacOS; now requires Perl 5.10 (though that may
