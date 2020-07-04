@@ -8,7 +8,7 @@ use ExtUtils::MakeMaker;
 use Devel::CheckLib;
 
 check_lib_or_exit(
-    header => 'sys/event.h',
+    header => ['sys/types.h', 'sys/event.h', 'sys/time.h'],
     function => 'return kqueue() == -1 ? 0 : 1;',
 );
 
