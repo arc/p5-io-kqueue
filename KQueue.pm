@@ -179,6 +179,8 @@ are:
 
 =item * C<< $kevent->[KQ_UDATA] >>
 
+=back
+
 See the included F<tail.pl> and F<chat.pl> scripts for example usage, and see
 the kqueue man pages for full details.
 
