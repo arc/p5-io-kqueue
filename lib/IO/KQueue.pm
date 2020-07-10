@@ -7,7 +7,7 @@ use Exporter qw(import);
 use XSLoader;
 
 BEGIN {
-our $VERSION = '0.37';
+our $VERSION = '0.38';
 
 our $MAX_EVENTS = 1000;
 
